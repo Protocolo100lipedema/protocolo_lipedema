@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Protocolo 100 Lipedema</title>
+
+<!-- ═══ PWA META TAGS ═══ -->
+<meta name="application-name" content="P100 Lipedema">
+<meta name="description" content="Protocolo completo de autocuidado anti-inflamatório para lipedema — 7 pilares diários.">
+<meta name="theme-color" content="#7A2F3E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="P100 Lipedema">
+
+<!-- ═══ PWA MANIFEST ═══ -->
+<link rel="manifest" href="manifest.json">
+
+<!-- ═══ ÍCONES ═══ -->
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rose:#C8788A;--wine:#7A2F3E;--blush:#F2E0E4;--cream:#FBF7F5;
+  --sand:#E8DDD7;--charcoal:#2D2020;--muted:#7A6868;--white:#FFFFFF;
+  --green:#4A7C59;--amber:#C8863A;--purple:#6B4E8A;--teal:#3A7C7A;
+  --gold:#C8A84B;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--charcoal);min-height:100vh}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--wine) 0%,#5A1F2E 60%,#3A0F1E 100%);color:var(--white);padding:48px 24px 40px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(200,120,138,.25) 0%,transparent 60%);pointer-events:none}
+.hero-eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:12px}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(30px,8vw,50px);font-weight:700;line-height:1.1;margin-bottom:8px}
+.hero-title span{color:var(--rose);font-style:italic}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.7);max-width:320px;margin:0 auto 24px;line-height:1.6}
+.pillars-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.pillar-chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 12px;font-size:11px;color:rgba(255,255,255,.85)}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--sand);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom,0)}
+.bottom-btn{flex:1;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .2s}
+.bottom-btn.active{color:var(--wine)}
+.bottom-btn span:first-child{font-size:19px}
+
+/* TABS */
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* WEEK NAV */
+.week-nav{background:var(--white);padding:14px 16px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-bottom:1px solid var(--sand)}
+.week-nav::-webkit-scrollbar{display:none}
+.day-btn{flex:0 0 auto;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--sand);background:var(--white);color:var(--muted);cursor:pointer;transition:all .2s}
+.day-btn.active{background:var(--wine);border-color:var(--wine);color:var(--white)}
+
+/* DAY VIEW */
+.day-view{display:none;padding:18px 16px 90px}
+.day-view.active{display:block}
+.day-header{margin-bottom:18px}
+.day-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.day-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--wine)}
+.day-motto{font-size:13px;color:var(--muted);font-style:italic;margin-top:4px}
+
+/* SECTION CARDS */
+.section-card{background:var(--white);border-radius:16px;overflow:hidden;margin-bottom:12px;box-shadow:0 1px 4px rgba(45,32,32,.07)}
+.section-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
+.section-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.section-title-group{flex:1}
+.section-title{font-weight:600;font-size:15px;color:var(--charcoal)}
+.section-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.section-toggle{color:var(--muted);font-size:16px;transition:transform .25s}
+.section-card.open .section-toggle{transform:rotate(180deg)}
+.section-body{display:none;padding:0 16px 16px;border-top:1px solid var(--sand)}
+.section-card.open .section-body{display:block}
+
+/* MEAL */
+.meal-timeline{margin-top:12px}
+.meal-item{display:flex;gap:12px;margin-bottom:16px}
+.meal-time-col{width:72px;flex-shrink:0;padding-top:2px}
+.meal-time-badge{background:var(--blush);color:var(--wine);font-size:9px;font-weight:700;padding:3px 7px;border-radius:20px;white-space:nowrap;display:inline-block;letter-spacing:.5px}
+.meal-content{flex:1}
+.meal-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--wine);margin-bottom:3px}
+.meal-items{font-size:13px;color:var(--charcoal);line-height:1.7}
+.meal-tip{margin-top:5px;font-size:12px;color:var(--green);font-style:italic;background:#EEF5F1;padding:6px 10px;border-radius:8px}
+.shot-badge{display:inline-block;background:var(--wine);color:white;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.5px;margin-bottom:3px}
+
+/* EXERCÍCIO */
+.exercise-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.exercise-card{background:var(--blush);border-radius:12px;padding:13px}
+.exercise-card-title{font-weight:700;font-size:13px;color:var(--wine);margin-bottom:5px}
+.exercise-card-body{font-size:12px;color:var(--charcoal);line-height:1.6}
+.exercise-warning{margin-top:10px;background:#FFF4E0;border-left:3px solid var(--amber);padding:9px 12px;border-radius:0 8px 8px 0;font-size:12px;color:#7A5020}
+
+/* MASSAGEM */
+.massage-steps{margin-top:12px}
+.massage-step{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--rose);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-text{font-size:13px;line-height:1.6;color:var(--charcoal)}
+
+/* CHÁ */
+.cha-card{background:linear-gradient(135deg,#EEF5F1,#E8F2EE);border-radius:12px;padding:15px;margin-top:12px;border-left:4px solid var(--green)}
+.cha-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--green);margin-bottom:4px}
+.cha-benefit{font-size:13px;color:#2D5C3E;line-height:1.6;margin-bottom:7px}
+.cha-como{font-size:12px;color:var(--green);font-weight:600}
+
+/* SUPLEMENTOS */
+.supl-list{margin-top:12px}
+.supl-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:11px;padding-bottom:11px;border-bottom:1px solid var(--sand)}
+.supl-item:last-child{border-bottom:none}
+.supl-dot{width:9px;height:9px;border-radius:50%;background:var(--purple);flex-shrink:0;margin-top:5px}
+.supl-name{font-weight:600;font-size:14px;color:var(--purple)}
+.supl-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-top:2px}
+
+/* ÁGUA */
+.agua-calc{background:linear-gradient(135deg,#E8F4F8,#DDF0F5);border-radius:12px;padding:15px;margin-top:12px;border-left:4px solid var(--teal)}
+.agua-title{font-weight:700;font-size:14px;color:var(--teal);margin-bottom:8px}
+.agua-formula{font-size:13px;color:#1A5C5C;line-height:1.8}
+.agua-calc input{width:70px;padding:5px 8px;border:1.5px solid var(--teal);border-radius:8px;font-size:14px;font-weight:600;color:var(--teal);background:white;text-align:center;margin:0 5px}
+.agua-result{margin-top:9px;padding:9px;background:white;border-radius:8px;font-size:14px;font-weight:600;color:var(--teal);text-align:center}
+
+/* MEIA */
+.meia-card{background:linear-gradient(135deg,#F5F0FA,#EDE8F5);border-radius:12px;padding:15px;margin-top:12px;border-left:4px solid var(--purple);font-size:13px;color:var(--charcoal);line-height:1.7}
+
+/* HIGHLIGHT */
+.highlight-box{background:var(--blush);border-radius:10px;padding:13px;margin-top:10px;font-size:13px;color:var(--wine);line-height:1.7}
+.science-badge{display:inline-block;background:var(--green);color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.5px;margin-bottom:8px}
+.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;background:var(--blush);color:var(--wine);margin-right:4px;margin-bottom:4px}
+
+/* ══ CHECKLIST ══ */
+.checklist-section{padding:18px 16px 90px}
+.checklist-day-select{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:14px}
+.checklist-day-select::-webkit-scrollbar{display:none}
+.cl-day-btn{flex:0 0 auto;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--sand);background:var(--white);color:var(--muted);cursor:pointer;transition:all .2s}
+.cl-day-btn.active{background:var(--wine);border-color:var(--wine);color:var(--white)}
+.checklist-card{background:var(--white);border-radius:16px;padding:16px;box-shadow:0 1px 4px rgba(45,32,32,.07);margin-bottom:14px}
+.checklist-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--wine);margin-bottom:14px}
+.check-item{display:flex;align-items:center;gap:13px;padding:11px 0;border-bottom:1px solid var(--sand);cursor:pointer;transition:opacity .2s}
+.check-item:last-child{border-bottom:none}
+.check-item.done{opacity:.5}
+.check-box{width:23px;height:23px;border-radius:6px;border:2px solid var(--sand);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;background:var(--white)}
+.check-item.done .check-box{background:var(--green);border-color:var(--green)}
+.check-tick{color:white;font-size:13px;display:none}
+.check-item.done .check-tick{display:block}
+.check-label{font-size:14px;font-weight:500;color:var(--charcoal)}
+.progress-bar-wrap{background:var(--sand);border-radius:8px;height:7px;margin-bottom:12px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#6AAE85);border-radius:8px;transition:width .4s ease}
+.progress-label{font-size:12px;color:var(--muted);margin-bottom:6px}
+
+/* ══ PROGRESSO ══ */
+.progress-section{padding:18px 16px 90px}
+.prog-card{background:var(--white);border-radius:16px;padding:18px;box-shadow:0 1px 4px rgba(45,32,32,.07);margin-bottom:14px}
+.prog-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--wine);margin-bottom:14px}
+.input-row{display:flex;gap:10px;align-items:flex-end;margin-bottom:12px;flex-wrap:wrap}
+.input-group{display:flex;flex-direction:column;gap:5px;flex:1;min-width:100px}
+.input-group label{font-size:12px;font-weight:600;color:var(--muted)}
+.input-group input{padding:9px 12px;border:1.5px solid var(--sand);border-radius:10px;font-size:14px;color:var(--charcoal);background:var(--white);font-family:'Inter',sans-serif}
+.input-group input:focus{outline:none;border-color:var(--wine)}
+.btn-primary{background:var(--wine);color:white;border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s;white-space:nowrap}
+.btn-primary:hover{opacity:.88}
+.btn-secondary{background:var(--blush);color:var(--wine);border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer}
+
+/* peso entries */
+.peso-entries{margin-top:8px}
+.peso-entry{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--sand);font-size:13px}
+.peso-entry:last-child{border-bottom:none}
+.peso-entry-date{color:var(--muted)}
+.peso-entry-val{font-weight:700;color:var(--wine)}
+.peso-entry-diff{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:600}
+.diff-neg{background:#EEF5F1;color:var(--green)}
+.diff-pos{background:#FEF0F0;color:var(--rose)}
+.diff-zero{background:var(--sand);color:var(--muted)}
+
+/* medidas */
+.medidas-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.med-card{background:var(--blush);border-radius:12px;padding:12px;text-align:center}
+.med-label{font-size:11px;color:var(--muted);margin-bottom:4px}
+.med-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--wine)}
+.med-unit{font-size:11px;color:var(--muted)}
+.med-diff{font-size:11px;margin-top:3px;font-weight:600}
+
+/* dor tracker */
+.dor-scale{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.dor-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--sand);background:var(--white);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;color:var(--muted)}
+.dor-btn.selected{border-color:var(--wine);background:var(--wine);color:white}
+
+/* humor */
+.humor-row{display:flex;gap:10px;margin-top:10px}
+.humor-btn{flex:1;padding:10px 4px;border:2px solid var(--sand);border-radius:12px;background:var(--white);font-size:20px;cursor:pointer;text-align:center;transition:all .2s}
+.humor-btn.selected{border-color:var(--wine);background:var(--blush)}
+
+/* streak */
+.streak-banner{background:linear-gradient(135deg,var(--wine),#5A1F2E);border-radius:16px;padding:18px;color:white;text-align:center;margin-bottom:14px}
+.streak-num{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;line-height:1;color:var(--rose)}
+.streak-label{font-size:13px;opacity:.8;margin-top:4px}
+.streak-fire{font-size:32px;margin-bottom:4px}
+
+/* ══ CONQUISTAS ══ */
+.conquistas-section{padding:18px 16px 90px}
+.conquest-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.conquest-card{background:var(--white);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(45,32,32,.07);text-align:center;transition:transform .2s}
+.conquest-card.unlocked{background:linear-gradient(135deg,#FBF7F5,var(--blush))}
+.conquest-card.locked{opacity:.45;filter:grayscale(.6)}
+.conquest-emoji{font-size:34px;margin-bottom:7px}
+.conquest-name{font-weight:700;font-size:13px;color:var(--charcoal);margin-bottom:4px}
+.conquest-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.conquest-badge{display:inline-block;background:var(--gold);color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:6px;letter-spacing:.5px}
+.locked-badge{display:inline-block;background:var(--sand);color:var(--muted);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:6px}
+
+/* frase do dia */
+.frase-card{background:linear-gradient(135deg,var(--wine),#5A1F2E);border-radius:16px;padding:20px;color:white;margin-bottom:14px;text-align:center}
+.frase-text{font-family:'Playfair Display',serif;font-size:16px;font-style:italic;line-height:1.6;margin-bottom:8px}
+.frase-author{font-size:11px;opacity:.6;letter-spacing:1px}
+
+/* INFO */
+.info-section{padding:18px 16px 90px}
+.info-card{background:var(--white);border-radius:16px;padding:18px;box-shadow:0 1px 4px rgba(45,32,32,.07);margin-bottom:12px}
+.info-card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--wine);margin-bottom:9px}
+.info-text{font-size:14px;color:var(--charcoal);line-height:1.7}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Autocuidado · Ciência · Consistência</div>
+  <h1 class="hero-title">Protocolo <span>100</span><br>Lipedema</h1>
+  <p class="hero-sub">7 pilares diários para reduzir a inflamação e viver com mais leveza.</p>
+  <div class="pillars-row">
+    <span class="pillar-chip">🥗 Alimentação</span>
+    <span class="pillar-chip">🏋️ Treino</span>
+    <span class="pillar-chip">💆 Massagem</span>
+    <span class="pillar-chip">🧦 Meia</span>
+    <span class="pillar-chip">🍵 Chá</span>
+    <span class="pillar-chip">💊 Suplementos</span>
+    <span class="pillar-chip">💧 Água</span>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bottom-btn active" onclick="showTab('cronograma',this)"><span>📅</span><span>Protocolo</span></button>
+  <button class="bottom-btn" onclick="showTab('checklist',this)"><span>✅</span><span>Checklist</span></button>
+  <button class="bottom-btn" onclick="showTab('progresso',this)"><span>📊</span><span>Progresso</span></button>
+  <button class="bottom-btn" onclick="showTab('conquistas',this)"><span>🏆</span><span>Conquistas</span></button>
+  <button class="bottom-btn" onclick="showTab('info',this)"><span>💡</span><span>Saiba mais</span></button>
+</nav>
+
+<!-- ══════════════ CRONOGRAMA ══════════════ -->
+<div id="tab-cronograma" class="tab-content active">
+  <div class="week-nav">
+    <button class="day-btn active" onclick="showDay(0,this)">Seg</button>
+    <button class="day-btn" onclick="showDay(1,this)">Ter</button>
+    <button class="day-btn" onclick="showDay(2,this)">Qua</button>
+    <button class="day-btn" onclick="showDay(3,this)">Qui</button>
+    <button class="day-btn" onclick="showDay(4,this)">Sex</button>
+    <button class="day-btn" onclick="showDay(5,this)">Sáb</button>
+    <button class="day-btn" onclick="showDay(6,this)">Dom</button>
+  </div>
+
+  <!-- SEGUNDA -->
+  <div id="day-0" class="day-view active">
+    <div class="day-header">
+      <div class="day-label">Dia 1 · Segunda-feira</div>
+      <div class="day-title">Começar é o primeiro passo.</div>
+      <div class="day-motto">🌿 Chá do dia: Gengibre com Limão</div>
+    </div>
+    <!-- Alimentação -->
+    <div class="section-card open">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon" style="background:#FEF0F0">🥗</div>
+        <div class="section-title-group"><div class="section-title">Alimentação</div><div class="section-sub">Anti-inflamatória e desinflamatória</div></div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="meal-timeline">
+          <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES CAFÉ</span></div><div class="meal-content"><div class="shot-badge">SHOT DOURADO</div><div class="meal-name">Shot Anti-inflamatório</div><div class="meal-items">100 ml de água morna · suco de ½ limão · 1 col. café de cúrcuma · 1 col. café de gengibre · 10 gotas de própolis</div><div class="meal-tip">✦ Modula a inflamação e fornece compostos antioxidantes para começar bem o dia.</div></div></div>
+          <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CAFÉ</span></div><div class="meal-content"><div class="meal-name">Omelete com Sementes</div><div class="meal-items">Omelete de 2 ovos com espinafre e tomate · 1 fatia de pão integral · 1 banana · <strong>2 col. sopa do mix de sementes</strong> · café ou chá sem açúcar</div><div class="meal-tip">✦ As sementes fornecem ômega-3, zinco e fibras — base anti-inflamatória do dia.</div></div></div>
+          <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">COLAÇÃO</span></div><div class="meal-content"><div class="meal-name">Frutas Roxas + Castanha</div><div class="meal-items">1 xícara de uva roxa ou mirtilo · 2 castanhas-do-pará</div><div class="meal-tip">✦ Antocianinas das frutas roxas + selênio da castanha = defesa antioxidante.</div></div></div>
+          <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ALMOÇO</span></div><div class="meal-content"><div class="meal-name">Prato Equilibrado</div><div class="meal-items"><strong>50% vegetais:</strong> salada colorida + brócolis + azeite extravirgem + limão<br><strong>25% proteína:</strong> frango grelhado com ervas<br><strong>25% carbo:</strong> arroz integral ou quinoa · feijão ou lentilha<br>Sobremesa: laranja ou mexerica</div><div class="meal-tip">✦ Brócolis apoia a detoxificação hormonal — essencial para mulheres com lipedema.</div></div></div>
+          <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES JANTAR</span></div><div class="meal-content"><div class="meal-name">Estratégia Metabólica</div><div class="meal-items">1 col. sopa de vinagre de maçã orgânico em 50 ml de água</div><div class="meal-tip">✦ Auxilia no controle da glicemia e na resposta metabólica do jantar.</div></div></div>
+          <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">LANCHE</span></div><div class="meal-content"><div class="meal-name">Smoothie Anti-inflamatório</div><div class="meal-items">Leite vegetal + frutas vermelhas congeladas + 1 col. chia + whey isolado clean label<br><em>Prefira adoçado com estévia ou taumatina — sem adoçantes artificiais.</em></div></div></div>
+          <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">JANTAR</span></div><div class="meal-content"><div class="meal-name">Prato Leve</div><div class="meal-items">Proteína magra (peixe ou frango) · salada de folhas verdes · couve-flor no vapor · azeite + limão</div></div></div>
+          <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CEIA</span></div><div class="meal-content"><div class="meal-name">🥝 Kiwi</div><div class="meal-items">1 kiwi fresco</div><div class="meal-tip">✦ Rico em vitamina C, fibras e compostos que melhoram o sono e o intestino.</div></div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Treino -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon" style="background:#EEF5F1">🏋️</div>
+        <div class="section-title-group"><div class="section-title">Treino</div><div class="section-sub">Musculação + caminhada leve</div></div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="exercise-grid">
+          <div class="exercise-card"><div class="exercise-card-title">💪 Musculação</div><div class="exercise-card-body">Agachamento com banco · Leg press leve · Rosca direta · Supino com halter<br><br>3 séries × 12–15 reps · pausa 60s · carga baixa e controlada</div></div>
+          <div class="exercise-card"><div class="exercise-card-title">🚶 Caminhada</div><div class="exercise-card-body">20–30 min em ritmo moderado<br><br>Ativa a circulação · reduz o inchaço · use meia de compressão</div></div>
+        </div>
+        <div class="exercise-warning">⚠️ Evite corrida, saltos e alto impacto. Use sempre a meia de compressão durante o treino.</div>
+      </div>
+    </div>
+    <!-- Massagem -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon" style="background:#F5F0FA">💆</div>
+        <div class="section-title-group"><div class="section-title">Massagem</div><div class="section-sub">Escovação + drenagem linfática</div></div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="massage-steps">
+          <div class="massage-step"><div class="step-num">1</div><div class="step-text"><strong>Escovação a seco:</strong> escova de cerdas naturais, movimentos suaves do pé em direção ao coração — 5 min. Estimula o sistema linfático.</div></div>
+          <div class="massage-step"><div class="step-num">2</div><div class="step-text"><strong>Drenagem manual:</strong> movimentos lentos e suaves ascendentes com óleo vegetal (rosa mosqueta ou arnica) — 10–15 min.</div></div>
+          <div class="massage-step"><div class="step-num">3</div><div class="step-text"><strong>Pernas elevadas:</strong> deite com as pernas acima do nível do coração por 10 min para favorecer o retorno linfático.</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Meia -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon" style="background:#EDE8F5">🧦</div>
+        <div class="section-title-group"><div class="section-title">Meia de Compressão</div><div class="section-sub">Uso diário nas atividades</div></div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="meia-card">Use durante caminhadas, treinos e atividades em pé. A compressão apoia o sistema linfático e venoso, transportando o fluido linfático e reduzindo o inchaço e a dor.<br><br><strong>Atenção:</strong> a compressão deve ser graduada — consulte seu médico para indicação da pressão ideal para o seu estágio.</div>
+      </div>
+    </div>
+    <!-- Chá -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon" style="background:#EEF5F1">🍵</div>
+        <div class="section-title-group"><div class="section-title">Chá do Dia</div><div class="section-sub">Gengibre com Limão</div></div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="cha-card">
+          <div class="cha-name">🌿 Gengibre com Limão</div>
+          <div class="cha-benefit">O gengibre inibe substâncias pró-inflamatórias (COX-2) e o limão fornece vitamina C antioxidante, apoiando o sistema linfático e imune.</div>
+          <div class="cha-como">1 rodela de gengibre fresco em 200 ml de água quente por 5 min. Esprema ½ limão. 2x ao dia sem açúcar.</div>
+        </div>
+      </div>
+    </div>
+    <!-- Suplementos -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon" style="background:#F5F0FA">💊</div>
+        <div class="section-title-group"><div class="section-title">Suplementos</div><div class="section-sub">Protocolo diário essencial</div></div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="supl-list">
+          <div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Ômega-3</div><div class="supl-desc">Anti-inflamatório potente. Reduz inchaço e dor. Tomar com a refeição principal.</div></div></div>
+          <div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Resveratrol</div><div class="supl-desc">Antioxidante, saúde vascular e celular. Pode misturar no suco de uva integral.</div></div></div>
+          <div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Coenzima Q10</div><div class="supl-desc">Energia celular e antioxidante. Lipossolúvel — tomar com refeição com gordura boa (azeite, abacate).</div></div></div>
+          <div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Glutamina</div><div class="supl-desc">Saúde intestinal. Intestino saudável = menos inflamação sistêmica. Em pó na água ou suco.</div></div></div>
+        </div>
+        <p style="font-size:11px;color:var(--muted);margin-top:6px;font-style:italic">⚕️ Consulte sempre um profissional de saúde para dosagens individualizadas.</p>
+      </div>
+    </div>
+    <!-- Água -->
+    <div class="section-card">
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-icon" style="background:#E8F4F8">💧</div>
+        <div class="section-title-group"><div class="section-title">Água</div><div class="section-sub">Calcule sua meta diária</div></div>
+        <div class="section-toggle">▼</div>
+      </div>
+      <div class="section-body">
+        <div class="agua-calc">
+          <div class="agua-title">Calculadora de Hidratação</div>
+          <div class="agua-formula">Peso: <input type="number" id="p0" placeholder="65" oninput="calcW('p0','r0')"> kg</div>
+          <div class="agua-result" id="r0">Digite seu peso ↑</div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">Base: 35 ml × peso corporal. Aumente em dias de treino ou calor. Distribua ao longo do dia.</p>
+      </div>
+    </div>
+  </div><!-- /day-0 -->
+
+  <!-- TERÇA -->
+  <div id="day-1" class="day-view">
+    <div class="day-header"><div class="day-label">Dia 2 · Terça-feira</div><div class="day-title">A constância transforma.</div><div class="day-motto">🌿 Chá do dia: Erva-Mate</div></div>
+    <div class="section-card open"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#FEF0F0">🥗</div><div class="section-title-group"><div class="section-title">Alimentação</div><div class="section-sub">Cardápio variado do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meal-timeline">
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES CAFÉ</span></div><div class="meal-content"><div class="shot-badge">SHOT ROXO</div><div class="meal-name">Shot de Beterraba</div><div class="meal-items">1 col. chá de farinha de beterraba · 1 col. chá de vinagre de maçã orgânico · 50 ml de água</div><div class="meal-tip">✦ Auxilia na circulação e fornece antioxidantes para a desinflamação.</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CAFÉ</span></div><div class="meal-content"><div class="meal-name">Cuscuz Proteico</div><div class="meal-items">Cuscuz (25g de flocão de milho) · ovos mexidos · 1 fruta da estação · <strong>2 col. sopa do mix de sementes</strong> · chá sem açúcar</div><div class="meal-tip">✦ Rico em proteína e fibras para controle glicêmico e saciedade.</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">COLAÇÃO</span></div><div class="meal-content"><div class="meal-name">Iogurte + Mirtilo</div><div class="meal-items">Iogurte natural sem açúcar · mirtilos ou amoras · 1 col. chá de mel puro (opcional)</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ALMOÇO</span></div><div class="meal-content"><div class="meal-name">Prato Equilibrado</div><div class="meal-items"><strong>50%:</strong> couve refogada + cenoura + beterraba + azeite + limão<br><strong>25%:</strong> peixe assado (tilápia, atum, sardinha) — rico em ômega-3 natural<br><strong>25%:</strong> batata-doce assada · lentilha<br>Sobremesa: abacaxi (bromelina anti-inflamatória)</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES JANTAR</span></div><div class="meal-content"><div class="meal-name">Vinagre de Maçã</div><div class="meal-items">1 col. sopa em 50 ml de água</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">LANCHE</span></div><div class="meal-content"><div class="meal-name">Fruta + Castanha</div><div class="meal-items">1 maçã ou pera · 2 castanhas-do-pará · punhado de nozes</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">JANTAR</span></div><div class="meal-content"><div class="meal-name">Sopa de Legumes</div><div class="meal-items">Sopa com chuchu, abobrinha, brócolis, cenoura + frango desfiado</div><div class="meal-tip">✦ Jantar leve e quente favorece o sono e o intestino.</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CEIA</span></div><div class="meal-content"><div class="meal-name">🍇 Uva Roxa</div><div class="meal-items">1 cacho pequeno de uva roxa</div><div class="meal-tip">✦ Antocianinas relaxantes naturais. Resveratrol na forma mais pura.</div></div></div>
+    </div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🏋️</div><div class="section-title-group"><div class="section-title">Treino</div><div class="section-sub">Natação ou hidroginástica</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="exercise-grid"><div class="exercise-card"><div class="exercise-card-title">🏊 Natação / Hidro</div><div class="exercise-card-body">30–45 min na água<br><br>A pressão da água age como drenagem linfática natural. Sem impacto — ideal para o lipedema.</div></div><div class="exercise-card"><div class="exercise-card-title">🧘 Alongamento</div><div class="exercise-card-body">10–15 min pós-treino<br><br>Panturrilhas, coxa interna e quadril. Melhora o retorno linfático.</div></div></div><div class="exercise-warning">💧 Na natação, a água já oferece compressão natural — único exercício onde dispensa a meia.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💆</div><div class="section-title-group"><div class="section-title">Massagem</div><div class="section-sub">Escovação + drenagem</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="massage-steps"><div class="massage-step"><div class="step-num">1</div><div class="step-text">Escovação a seco — 5 min, do pé ao coração.</div></div><div class="massage-step"><div class="step-num">2</div><div class="step-text">Drenagem com óleo vegetal — 10–15 min, movimentos ascendentes suaves.</div></div><div class="massage-step"><div class="step-num">3</div><div class="step-text">Pernas elevadas — 10 min de repouso.</div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EDE8F5">🧦</div><div class="section-title-group"><div class="section-title">Meia de Compressão</div><div class="section-sub">Nas atividades do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meia-card">Use durante caminhadas e atividades em pé. Na natação, dispensa o uso.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🍵</div><div class="section-title-group"><div class="section-title">Chá do Dia</div><div class="section-sub">Erva-Mate</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="cha-card"><div class="cha-name">🌿 Erva-Mate</div><div class="cha-benefit">Rica em polifenóis antioxidantes. Melhora a circulação, tem efeito diurético suave e contribui para o controle da glicemia e do colesterol.</div><div class="cha-como">Infusão de 5–10g em água quente (não fervente). 1–2 xícaras ao dia, sem açúcar.</div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💊</div><div class="section-title-group"><div class="section-title">Suplementos</div><div class="section-sub">Protocolo diário</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="supl-list"><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Ômega-3</div><div class="supl-desc">Com o almoço.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Resveratrol</div><div class="supl-desc">Com suco de uva ou água.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Coenzima Q10</div><div class="supl-desc">Com refeição com gordura boa.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Glutamina</div><div class="supl-desc">Em pó na água ou vitamina.</div></div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#E8F4F8">💧</div><div class="section-title-group"><div class="section-title">Água</div><div class="section-sub">Meta do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="agua-calc"><div class="agua-title">Calculadora</div><div class="agua-formula">Peso: <input type="number" id="p1" placeholder="65" oninput="calcW('p1','r1')"> kg</div><div class="agua-result" id="r1">Digite seu peso ↑</div></div></div></div>
+  </div><!-- /day-1 -->
+
+  <!-- QUARTA -->
+  <div id="day-2" class="day-view">
+    <div class="day-header"><div class="day-label">Dia 3 · Quarta-feira</div><div class="day-title">Metade da semana — você chegou!</div><div class="day-motto">🌿 Chá do dia: Cavalinha</div></div>
+    <div class="section-card open"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#FEF0F0">🥗</div><div class="section-title-group"><div class="section-title">Alimentação</div><div class="section-sub">Cardápio do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meal-timeline">
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES CAFÉ</span></div><div class="meal-content"><div class="shot-badge">SHOT DOURADO</div><div class="meal-name">Shot Anti-inflamatório</div><div class="meal-items">Cúrcuma + gengibre + limão + própolis + água morna</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CAFÉ</span></div><div class="meal-content"><div class="meal-name">Tapioca Proteica</div><div class="meal-items">Tapioca com frango desfiado e folhas verdes · 1 fruta · <strong>2 col. sopa do mix de sementes</strong> · chá sem açúcar</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">COLAÇÃO</span></div><div class="meal-content"><div class="meal-name">Amora + Castanha</div><div class="meal-items">1 xícara de amoras frescas · 2 castanhas-do-pará</div><div class="meal-tip">✦ Antocianinas + selênio = poderosa combinação antioxidante.</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ALMOÇO</span></div><div class="meal-content"><div class="meal-name">Prato Equilibrado</div><div class="meal-items"><strong>50%:</strong> salada de folhas + tomate + pepino + rúcula + azeite + limão<br><strong>25%:</strong> carne vermelha magra (máx. 3×/semana)<br><strong>25%:</strong> inhame ou cará cozido · feijão ou grão-de-bico<br>Sobremesa: kiwi</div><div class="meal-tip">✦ Inhame tem baixo IG e amido resistente — ótimo para o intestino e controle glicêmico.</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES JANTAR</span></div><div class="meal-content"><div class="meal-name">Vinagre de Maçã</div><div class="meal-items">1 col. sopa em 50 ml de água</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">LANCHE</span></div><div class="meal-content"><div class="meal-name">Smoothie Verde</div><div class="meal-items">Leite vegetal + banana + espinafre + 1 col. chia + whey isolado clean</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">JANTAR</span></div><div class="meal-content"><div class="meal-name">Omelete + Salada</div><div class="meal-items">Omelete de 2 ovos com cebola e ervas frescas · salada colorida · azeite extravirgem</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CEIA</span></div><div class="meal-content"><div class="meal-name">🍌 Banana com Canela</div><div class="meal-items">½ banana madura polvilhada com canela</div><div class="meal-tip">✦ Triptofano da banana favorece a produção de serotonina e melhora o sono.</div></div></div>
+    </div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🏋️</div><div class="section-title-group"><div class="section-title">Treino</div><div class="section-sub">Pilates ou yoga</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="exercise-grid"><div class="exercise-card"><div class="exercise-card-title">🧘 Pilates</div><div class="exercise-card-body">45–60 min<br><br>Fortalece a musculatura profunda, melhora a postura e a flexibilidade. Sem impacto — consciência corporal total.</div></div><div class="exercise-card"><div class="exercise-card-title">🌸 Yoga Suave</div><div class="exercise-card-body">30–45 min<br><br>Posições com pernas elevadas melhoram a circulação linfática. Reduz o cortisol que piora a inflamação.</div></div></div><div class="exercise-warning">🌿 Quarta é dia de recuperação ativa. Foco em mobilidade e relaxamento.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💆</div><div class="section-title-group"><div class="section-title">Massagem</div><div class="section-sub">Escovação + drenagem</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="massage-steps"><div class="massage-step"><div class="step-num">1</div><div class="step-text">Escovação a seco — 5 min.</div></div><div class="massage-step"><div class="step-num">2</div><div class="step-text">Drenagem com óleo — 10–15 min.</div></div><div class="massage-step"><div class="step-num">3</div><div class="step-text">Pernas elevadas — 10 min.</div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EDE8F5">🧦</div><div class="section-title-group"><div class="section-title">Meia de Compressão</div><div class="section-sub">Nas atividades</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meia-card">Use durante o pilates, yoga e atividades em pé.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🍵</div><div class="section-title-group"><div class="section-title">Chá do Dia</div><div class="section-sub">Cavalinha</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="cha-card"><div class="cha-name">🌿 Cavalinha</div><div class="cha-benefit">Diurético natural suave. Ajuda a eliminar o excesso de líquido retido nos tecidos, reduzindo o inchaço e a sensação de peso nas pernas.</div><div class="cha-como">Infusão de 1–2g em 150 ml de água quente. 1–2 xícaras ao dia.</div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💊</div><div class="section-title-group"><div class="section-title">Suplementos</div><div class="section-sub">Protocolo diário</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="supl-list"><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Ômega-3</div><div class="supl-desc">Com o almoço.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Resveratrol</div><div class="supl-desc">Com suco ou água.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Coenzima Q10</div><div class="supl-desc">Com gordura boa.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Glutamina</div><div class="supl-desc">Em pó na água.</div></div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#E8F4F8">💧</div><div class="section-title-group"><div class="section-title">Água</div><div class="section-sub">Meta do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="agua-calc"><div class="agua-title">Calculadora</div><div class="agua-formula">Peso: <input type="number" id="p2" placeholder="65" oninput="calcW('p2','r2')"> kg</div><div class="agua-result" id="r2">Digite seu peso ↑</div></div></div></div>
+  </div><!-- /day-2 -->
+
+  <!-- QUINTA -->
+  <div id="day-3" class="day-view">
+    <div class="day-header"><div class="day-label">Dia 4 · Quinta-feira</div><div class="day-title">Cada escolha é um ato de amor próprio.</div><div class="day-motto">🌿 Chá do dia: Chá Verde</div></div>
+    <div class="section-card open"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#FEF0F0">🥗</div><div class="section-title-group"><div class="section-title">Alimentação</div><div class="section-sub">Cardápio do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meal-timeline">
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES CAFÉ</span></div><div class="meal-content"><div class="shot-badge">SHOT ROXO</div><div class="meal-name">Shot de Beterraba</div><div class="meal-items">Farinha de beterraba + vinagre de maçã + água</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CAFÉ</span></div><div class="meal-content"><div class="meal-name">Vitamina Verde</div><div class="meal-items">Leite vegetal + espinafre + banana + aveia + <strong>2 col. sopa do mix de sementes</strong> · café sem açúcar</div><div class="meal-tip">✦ Betaglucana da aveia reduz inflamação e regula o intestino.</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">COLAÇÃO</span></div><div class="meal-content"><div class="meal-name">Uva Roxa + Castanha</div><div class="meal-items">1 cacho pequeno de uva roxa · 2 castanhas-do-pará</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ALMOÇO</span></div><div class="meal-content"><div class="meal-name">Prato Equilibrado</div><div class="meal-items"><strong>50%:</strong> rúcula + tomate cereja + pepino + cenoura ralada + azeite + limão<br><strong>25%:</strong> peixe assado com ervas<br><strong>25%:</strong> quinoa ou arroz integral · grão-de-bico<br>Sobremesa: abacaxi (bromelina anti-inflamatória)</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES JANTAR</span></div><div class="meal-content"><div class="meal-name">Vinagre de Maçã</div><div class="meal-items">1 col. sopa em 50 ml de água</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">LANCHE</span></div><div class="meal-content"><div class="meal-name">Smoothie Roxo</div><div class="meal-items">Leite vegetal + amoras congeladas + chia + whey isolado clean</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">JANTAR</span></div><div class="meal-content"><div class="meal-name">Prato Leve</div><div class="meal-items">Frango grelhado com ervas · abobrinha refogada · couve-flor · azeite extravirgem</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CEIA</span></div><div class="meal-content"><div class="meal-name">🫐 Mirtilo</div><div class="meal-items">½ xícara de mirtilo fresco ou descongelado</div><div class="meal-tip">✦ Um dos maiores antioxidantes da natureza. Anti-inflamatório e favorece o sono.</div></div></div>
+    </div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🏋️</div><div class="section-title-group"><div class="section-title">Treino</div><div class="section-sub">Musculação superior + bicicleta</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="exercise-grid"><div class="exercise-card"><div class="exercise-card-title">💪 Musculação Superior</div><div class="exercise-card-body">Remada com halter · Desenvolvimento de ombro · Tríceps · Abdominais hipopressivos<br><br>3 séries × 12–15 reps</div></div><div class="exercise-card"><div class="exercise-card-title">🚴 Bicicleta Ergométrica</div><div class="exercise-card-body">20 min ritmo moderado<br><br>Estimula o fluxo linfático sem impacto nos joelhos.</div></div></div><div class="exercise-warning">⚠️ Use meia de compressão. Priorize a qualidade do movimento.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💆</div><div class="section-title-group"><div class="section-title">Massagem</div><div class="section-sub">Escovação + drenagem</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="massage-steps"><div class="massage-step"><div class="step-num">1</div><div class="step-text">Escovação a seco — 5 min.</div></div><div class="massage-step"><div class="step-num">2</div><div class="step-text">Drenagem com óleo — 10–15 min.</div></div><div class="massage-step"><div class="step-num">3</div><div class="step-text">Pernas elevadas — 10 min.</div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EDE8F5">🧦</div><div class="section-title-group"><div class="section-title">Meia de Compressão</div><div class="section-sub">Nas atividades</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meia-card">Use durante o treino e atividades em pé.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🍵</div><div class="section-title-group"><div class="section-title">Chá do Dia</div><div class="section-sub">Chá Verde</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="cha-card"><div class="cha-name">🌿 Chá Verde</div><div class="cha-benefit">Rico em catequinas (EGCG), potente antioxidante. Reduz marcadores inflamatórios, apoia o metabolismo e melhora a sensibilidade à insulina.</div><div class="cha-como">Infusão de 2g em 150 ml de água a 80°C (não fervente). 2–3 xícaras ao dia. Evite após as 18h.</div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💊</div><div class="section-title-group"><div class="section-title">Suplementos</div><div class="section-sub">Protocolo diário</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="supl-list"><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Ômega-3</div><div class="supl-desc">Com o almoço.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Resveratrol</div><div class="supl-desc">Com suco ou água.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Coenzima Q10</div><div class="supl-desc">Com refeição com gordura boa.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Glutamina</div><div class="supl-desc">Em pó na água.</div></div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#E8F4F8">💧</div><div class="section-title-group"><div class="section-title">Água</div><div class="section-sub">Meta do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="agua-calc"><div class="agua-title">Calculadora</div><div class="agua-formula">Peso: <input type="number" id="p3" placeholder="65" oninput="calcW('p3','r3')"> kg</div><div class="agua-result" id="r3">Digite seu peso ↑</div></div></div></div>
+  </div><!-- /day-3 -->
+
+  <!-- SEXTA -->
+  <div id="day-4" class="day-view">
+    <div class="day-header"><div class="day-label">Dia 5 · Sexta-feira</div><div class="day-title">Você chegou à sexta com força!</div><div class="day-motto">🌿 Chá do dia: Erva-Cidreira</div></div>
+    <div class="section-card open"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#FEF0F0">🥗</div><div class="section-title-group"><div class="section-title">Alimentação</div><div class="section-sub">Cardápio do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meal-timeline">
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES CAFÉ</span></div><div class="meal-content"><div class="shot-badge">SHOT DOURADO</div><div class="meal-name">Shot Anti-inflamatório</div><div class="meal-items">Cúrcuma + gengibre + limão + própolis + água morna</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CAFÉ</span></div><div class="meal-content"><div class="meal-name">Bowl de Frutas</div><div class="meal-items">Iogurte natural + morango + mirtilo + granola sem açúcar + <strong>2 col. sopa do mix de sementes</strong> · chá sem açúcar</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">COLAÇÃO</span></div><div class="meal-content"><div class="meal-name">Ameixa + Nozes</div><div class="meal-items">2–3 ameixas frescas · punhado de nozes</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ALMOÇO</span></div><div class="meal-content"><div class="meal-name">Prato Equilibrado</div><div class="meal-items"><strong>50%:</strong> brócolis no vapor + repolho roxo + salada colorida + azeite + limão<br><strong>25%:</strong> frango ao forno com ervas aromáticas<br><strong>25%:</strong> mandioca ou batata-doce · lentilha<br>Sobremesa: kiwi ou mexerica</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES JANTAR</span></div><div class="meal-content"><div class="meal-name">Vinagre de Maçã</div><div class="meal-items">1 col. sopa em 50 ml de água</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">LANCHE</span></div><div class="meal-content"><div class="meal-name">Castanhas + Chocolate</div><div class="meal-items">Mix de castanhas · 2 quadradinhos de chocolate 70%+ cacau (sem adoçante artificial)</div><div class="meal-tip">✦ Cacau rico em flavonoides anti-inflamatórios. Pequena quantidade, grande benefício!</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">JANTAR</span></div><div class="meal-content"><div class="meal-name">Prato Leve</div><div class="meal-items">Sopa de legumes + frango ou omelete + salada verde</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CEIA</span></div><div class="meal-content"><div class="meal-name">🍊 Laranja pequena</div><div class="meal-items">1 laranja pequena ou mexerica</div><div class="meal-tip">✦ Vitamina C e hesperidina que apoiam a circulação e têm leve efeito calmante.</div></div></div>
+    </div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🏋️</div><div class="section-title-group"><div class="section-title">Treino</div><div class="section-sub">Musculação inferior</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="exercise-grid"><div class="exercise-card"><div class="exercise-card-title">🦵 Musculação Inferior</div><div class="exercise-card-body">Leg press leve · Cadeira flexora · Panturrilha sentada · Abdução de quadril<br><br>3 séries × 15 reps · carga controlada</div></div><div class="exercise-card"><div class="exercise-card-title">🚶 Caminhada</div><div class="exercise-card-body">20–30 min<br><br>Encerre a semana com uma caminhada revigorante ao ar livre.</div></div></div><div class="exercise-warning">⚠️ Use meia de compressão. Priorize a qualidade do movimento à carga.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💆</div><div class="section-title-group"><div class="section-title">Massagem</div><div class="section-sub">Escovação + drenagem</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="massage-steps"><div class="massage-step"><div class="step-num">1</div><div class="step-text">Escovação a seco — 5 min.</div></div><div class="massage-step"><div class="step-num">2</div><div class="step-text">Drenagem com óleo — 10–15 min.</div></div><div class="massage-step"><div class="step-num">3</div><div class="step-text">Pernas elevadas — 10 min.</div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EDE8F5">🧦</div><div class="section-title-group"><div class="section-title">Meia de Compressão</div><div class="section-sub">Nas atividades</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meia-card">Use durante o treino, caminhada e atividades em pé.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🍵</div><div class="section-title-group"><div class="section-title">Chá do Dia</div><div class="section-sub">Erva-Cidreira</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="cha-card"><div class="cha-name">🌿 Erva-Cidreira</div><div class="cha-benefit">Calmante natural e levemente diurética. Reduz o estresse — fator que agrava a inflamação no lipedema. Ideal para o fim de semana que se aproxima.</div><div class="cha-como">1 col. chá em 200 ml de água quente por 5 min. 2 xícaras ao dia.</div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💊</div><div class="section-title-group"><div class="section-title">Suplementos</div><div class="section-sub">Protocolo diário</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="supl-list"><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Ômega-3</div><div class="supl-desc">Com o almoço.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Resveratrol</div><div class="supl-desc">Com suco ou água.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Coenzima Q10</div><div class="supl-desc">Com gordura boa.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Glutamina</div><div class="supl-desc">Em pó na água.</div></div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#E8F4F8">💧</div><div class="section-title-group"><div class="section-title">Água</div><div class="section-sub">Meta do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="agua-calc"><div class="agua-title">Calculadora</div><div class="agua-formula">Peso: <input type="number" id="p4" placeholder="65" oninput="calcW('p4','r4')"> kg</div><div class="agua-result" id="r4">Digite seu peso ↑</div></div></div></div>
+  </div><!-- /day-4 -->
+
+  <!-- SÁBADO -->
+  <div id="day-5" class="day-view">
+    <div class="day-header"><div class="day-label">Dia 6 · Sábado</div><div class="day-title">O descanso também é parte do protocolo.</div><div class="day-motto">🌺 Chá do dia: Hibisco</div></div>
+    <div class="section-card open"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#FEF0F0">🥗</div><div class="section-title-group"><div class="section-title">Alimentação</div><div class="section-sub">Dia flexível e consciente</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meal-timeline">
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES CAFÉ</span></div><div class="meal-content"><div class="shot-badge">SHOT ROXO</div><div class="meal-name">Shot de Beterraba</div><div class="meal-items">Farinha de beterraba + vinagre de maçã + água</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CAFÉ</span></div><div class="meal-content"><div class="meal-name">Brunch Desinflamatório</div><div class="meal-items">Ovos mexidos com tomate e manjericão · abacate amassado · fatia de pão integral · <strong>2 col. sopa do mix de sementes</strong> · café ou chá</div><div class="meal-tip">✦ Sábado merece um café especial — ainda desinflamatório!</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">COLAÇÃO</span></div><div class="meal-content"><div class="meal-name">Mix de Frutas</div><div class="meal-items">Morangos + uva roxa + 2 castanhas-do-pará</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ALMOÇO</span></div><div class="meal-content"><div class="meal-name">Almoço em Família</div><div class="meal-items">Mantenha: 50% vegetais · proteína · carbo baixo IG<br>Está ok incluir arroz branco hoje · feijão · salada · frango ou carne magra<br><strong>Diminua o açúcar — não precisa cortar tudo.</strong></div><div class="meal-tip">✦ Sábado é dia de equilíbrio sem culpa. Escolha bem e curta!</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">LANCHE</span></div><div class="meal-content"><div class="meal-name">Lanche Natural</div><div class="meal-items">Tapioca com frango e legumes · ou suco de laranja com gengibre</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">JANTAR</span></div><div class="meal-content"><div class="meal-name">Prato Leve</div><div class="meal-items">Salada completa + proteína + ovo ou leguminosas</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CEIA</span></div><div class="meal-content"><div class="meal-name">🥛 Iogurte com Mel</div><div class="meal-items">Iogurte natural sem açúcar + 1 col. chá de mel puro</div><div class="meal-tip">✦ Probiótico natural + mel puro = sono tranquilo e intestino saudável.</div></div></div>
+    </div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🏋️</div><div class="section-title-group"><div class="section-title">Treino</div><div class="section-sub">Hidroginástica ou caminhada longa</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="exercise-grid"><div class="exercise-card"><div class="exercise-card-title">🏊 Hidroginástica</div><div class="exercise-card-body">45–60 min<br><br>Aula completa. A pressão da água drena o fluido linfático naturalmente.</div></div><div class="exercise-card"><div class="exercise-card-title">🌳 Caminhada</div><div class="exercise-card-body">40–60 min<br><br>Terreno plano. Contato com a natureza reduz o cortisol que piora a inflamação.</div></div></div><div class="exercise-warning">⚠️ Hidrate-se bem antes, durante e depois do treino mais longo.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💆</div><div class="section-title-group"><div class="section-title">Massagem</div><div class="section-sub">Ritual completo de sábado</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="massage-steps"><div class="massage-step"><div class="step-num">1</div><div class="step-text">Escovação a seco — 10 min. Sábado merece caprichar!</div></div><div class="massage-step"><div class="step-num">2</div><div class="step-text">Drenagem com óleo — 20 min. Aproveite o tempo extra.</div></div><div class="massage-step"><div class="step-num">3</div><div class="step-text">Pernas elevadas — 15 min. Momento de relaxamento total.</div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EDE8F5">🧦</div><div class="section-title-group"><div class="section-title">Meia de Compressão</div><div class="section-sub">Nas atividades</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meia-card">Use durante hidroginástica, caminhada e atividades em pé.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🍵</div><div class="section-title-group"><div class="section-title">Chá do Dia</div><div class="section-sub">Hibisco</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="cha-card"><div class="cha-name">🌺 Hibisco</div><div class="cha-benefit">Rico em antocianinas e antioxidantes. Diurético natural, reduz a retenção de líquidos, melhora a circulação e tem leve efeito anti-inflamatório. Delicioso gelado também!</div><div class="cha-como">1 col. sopa de flores secas em 200 ml de água por 5 min. 2 xícaras/dia. Adoce com estévia se quiser.</div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💊</div><div class="section-title-group"><div class="section-title">Suplementos</div><div class="section-sub">Protocolo diário</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="supl-list"><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Ômega-3</div><div class="supl-desc">Com o almoço.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Resveratrol</div><div class="supl-desc">Com suco ou água.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Coenzima Q10</div><div class="supl-desc">Com gordura boa.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Glutamina</div><div class="supl-desc">Em pó na água.</div></div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#E8F4F8">💧</div><div class="section-title-group"><div class="section-title">Água</div><div class="section-sub">Meta do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="agua-calc"><div class="agua-title">Calculadora</div><div class="agua-formula">Peso: <input type="number" id="p5" placeholder="65" oninput="calcW('p5','r5')"> kg</div><div class="agua-result" id="r5">Digite seu peso ↑</div></div></div></div>
+  </div><!-- /day-5 -->
+
+  <!-- DOMINGO -->
+  <div id="day-6" class="day-view">
+    <div class="day-header"><div class="day-label">Dia 7 · Domingo</div><div class="day-title">Cuide do seu corpo — ele é sua casa.</div><div class="day-motto">🌼 Chá do dia: Camomila com Canela</div></div>
+    <div class="section-card open"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#FEF0F0">🥗</div><div class="section-title-group"><div class="section-title">Alimentação</div><div class="section-sub">Dia de recarga e amor próprio</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meal-timeline">
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES CAFÉ</span></div><div class="meal-content"><div class="shot-badge">SHOT DOURADO</div><div class="meal-name">Shot Anti-inflamatório</div><div class="meal-items">Cúrcuma + gengibre + limão + própolis + água morna</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CAFÉ</span></div><div class="meal-content"><div class="meal-name">Pancake de Aveia</div><div class="meal-items">Panqueca de aveia + ovo + banana (sem farinha branca) · frutas frescas · mel puro · <strong>2 col. sopa do mix de sementes</strong> · café ou chá</div><div class="meal-tip">✦ Um café especial de domingo que ainda nutre e desinfama!</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">COLAÇÃO</span></div><div class="meal-content"><div class="meal-name">Fruta da Estação</div><div class="meal-items">Qualquer fruta da estação + 2 castanhas-do-pará</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ALMOÇO</span></div><div class="meal-content"><div class="meal-name">Almoço Especial</div><div class="meal-items">50% vegetais + proteína + carbo baixo IG<br>Pode incluir uma pequena sobremesa natural (fruta, mousse de cacau, doce de banana)<br><strong>Diminua o açúcar — sem culpa, com equilíbrio.</strong></div><div class="meal-tip">✦ Domingo é dia de prazer também. Equilíbrio, não perfeição.</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">ANTES JANTAR</span></div><div class="meal-content"><div class="meal-name">Vinagre de Maçã</div><div class="meal-items">1 col. sopa em 50 ml de água</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">JANTAR</span></div><div class="meal-content"><div class="meal-name">Prato Leve</div><div class="meal-items">Sopa leve ou salada completa com proteína. Leveza para dormir bem e recomeçar na segunda.</div></div></div>
+      <div class="meal-item"><div class="meal-time-col"><span class="meal-time-badge">CEIA</span></div><div class="meal-content"><div class="meal-name">🍵 Camomila + Castanhas</div><div class="meal-items">Xícara de chá de camomila + 2 castanhas-do-pará</div><div class="meal-tip">✦ Camomila induz o sono profundo. Castanha fornece magnésio relaxante muscular.</div></div></div>
+    </div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🏋️</div><div class="section-title-group"><div class="section-title">Treino</div><div class="section-sub">Descanso ativo ou yoga</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="exercise-grid"><div class="exercise-card"><div class="exercise-card-title">🧘 Yoga Restaurativa</div><div class="exercise-card-body">30–45 min<br><br>Postura "pernas na parede" por 10 min — drena o fluido linfático naturalmente.</div></div><div class="exercise-card"><div class="exercise-card-title">🚶 Caminhada Leve</div><div class="exercise-card-body">20 min sem pressão<br><br>Apenas para mover o corpo e ativar a circulação com leveza.</div></div></div><div class="exercise-warning">💜 Domingo é recuperação. Respeite o seu corpo — ele trabalhou a semana toda.</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💆</div><div class="section-title-group"><div class="section-title">Massagem</div><div class="section-sub">Ritual de domingo</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="massage-steps"><div class="massage-step"><div class="step-num">1</div><div class="step-text">Escovação a seco — 10 min. Comece o ritual com calma.</div></div><div class="massage-step"><div class="step-num">2</div><div class="step-text">Drenagem com óleo — 20 min. Use música relaxante.</div></div><div class="massage-step"><div class="step-num">3</div><div class="step-text">Pernas elevadas — 15 min. Visualize a semana seguinte com disposição.</div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EDE8F5">🧦</div><div class="section-title-group"><div class="section-title">Meia de Compressão</div><div class="section-sub">Nas atividades</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="meia-card">Use durante yoga, caminhada e atividades em pé. Domingo mais tranquilo — mas não esqueça!</div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#EEF5F1">🍵</div><div class="section-title-group"><div class="section-title">Chá do Dia</div><div class="section-sub">Camomila com Canela</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="cha-card"><div class="cha-name">🌼 Camomila com Canela</div><div class="cha-benefit">Camomila: calmante, anti-inflamatória, melhora o sono. Canela: regula a glicemia e tem propriedades antioxidantes. Combinação perfeita para a noite de domingo.</div><div class="cha-como">1 sachê de camomila + 1 pau de canela em 200 ml de água quente por 5 min. 1–2 xícaras à noite.</div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#F5F0FA">💊</div><div class="section-title-group"><div class="section-title">Suplementos</div><div class="section-sub">Protocolo diário</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="supl-list"><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Ômega-3</div><div class="supl-desc">Com o almoço de domingo.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Resveratrol</div><div class="supl-desc">Com suco natural.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Coenzima Q10</div><div class="supl-desc">Com refeição.</div></div></div><div class="supl-item"><div class="supl-dot"></div><div><div class="supl-name">Glutamina</div><div class="supl-desc">Em pó na água.</div></div></div></div></div></div>
+    <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><div class="section-icon" style="background:#E8F4F8">💧</div><div class="section-title-group"><div class="section-title">Água</div><div class="section-sub">Meta do dia</div></div><div class="section-toggle">▼</div></div><div class="section-body"><div class="agua-calc"><div class="agua-title">Calculadora</div><div class="agua-formula">Peso: <input type="number" id="p6" placeholder="65" oninput="calcW('p6','r6')"> kg</div><div class="agua-result" id="r6">Digite seu peso ↑</div></div></div></div>
+  </div><!-- /day-6 -->
+</div><!-- /tab-cronograma -->
+
+<!-- ══════════════ CHECKLIST ══════════════ -->
+<div id="tab-checklist" class="tab-content">
+  <div class="checklist-section">
+    <div id="frase-card" class="frase-card"></div>
+    <div class="checklist-day-select">
+      <button class="cl-day-btn active" onclick="selectClDay(0,this)">Seg</button>
+      <button class="cl-day-btn" onclick="selectClDay(1,this)">Ter</button>
+      <button class="cl-day-btn" onclick="selectClDay(2,this)">Qua</button>
+      <button class="cl-day-btn" onclick="selectClDay(3,this)">Qui</button>
+      <button class="cl-day-btn" onclick="selectClDay(4,this)">Sex</button>
+      <button class="cl-day-btn" onclick="selectClDay(5,this)">Sáb</button>
+      <button class="cl-day-btn" onclick="selectClDay(6,this)">Dom</button>
+    </div>
+    <div class="checklist-card">
+      <div class="checklist-title" id="cl-day-title">Segunda-feira</div>
+      <div class="progress-label" id="cl-progress-label">0 de 7 tarefas concluídas</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="cl-progress-bar" style="width:0%"></div></div>
+      <div id="checklist-items">
+        <div class="check-item" onclick="toggleCheck(this,0)"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">🥗 Alimentação desinflamatória</span></div>
+        <div class="check-item" onclick="toggleCheck(this,1)"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">🏋️ Treino sem impacto</span></div>
+        <div class="check-item" onclick="toggleCheck(this,2)"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">💆 Massagem (escovação + drenagem)</span></div>
+        <div class="check-item" onclick="toggleCheck(this,3)"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">🧦 Meia de compressão</span></div>
+        <div class="check-item" onclick="toggleCheck(this,4)"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">🍵 Chá anti-inflamatório do dia</span></div>
+        <div class="check-item" onclick="toggleCheck(this,5)"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">💊 Suplementos (Ômega-3, Q10, Resveratrol, Glutamina)</span></div>
+        <div class="check-item" onclick="toggleCheck(this,6)"><div class="check-box"><span class="check-tick">✓</span></div><span class="check-label">💧 Meta de água atingida</span></div>
+      </div>
+    </div>
+    <div style="background:var(--blush);border-radius:14px;padding:15px;">
+      <p style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--wine);margin-bottom:6px">💜 Lembre-se sempre</p>
+      <p style="font-size:13px;color:var(--charcoal);line-height:1.7">O lipedema melhora <strong>quando você reduz a inflamação</strong>. Os melhores resultados aparecem com a combinação de todos os pilares. <strong>Cada dia que você segue o protocolo é uma vitória real.</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ PROGRESSO ══════════════ -->
+<div id="tab-progresso" class="tab-content">
+  <div class="progress-section">
+
+    <!-- Streak -->
+    <div class="streak-banner">
+      <div class="streak-fire">🔥</div>
+      <div class="streak-num" id="streak-num">0</div>
+      <div class="streak-label">dias consecutivos no protocolo</div>
+      <div style="margin-top:12px;display:flex;gap:10px;justify-content:center">
+        <button class="btn-secondary" onclick="addStreak()" style="background:rgba(255,255,255,.2);color:white;border:1px solid rgba(255,255,255,.3)">+1 dia ✓</button>
+        <button class="btn-secondary" onclick="resetStreak()" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.2);font-size:11px">Reiniciar</button>
+      </div>
+    </div>
+
+    <!-- Peso -->
+    <div class="prog-card">
+      <div class="prog-title">⚖️ Registro de Peso</div>
+      <div class="input-row">
+        <div class="input-group"><label>Data</label><input type="date" id="peso-data"></div>
+        <div class="input-group"><label>Peso (kg)</label><input type="number" id="peso-val" placeholder="70.5" step="0.1"></div>
+        <button class="btn-primary" onclick="addPeso()">Registrar</button>
+      </div>
+      <div id="peso-entries" class="peso-entries"></div>
+    </div>
+
+    <!-- Medidas -->
+    <div class="prog-card">
+      <div class="prog-title">📏 Minhas Medidas</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Atualize semanalmente para acompanhar a evolução.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div class="input-group"><label>Cintura (cm)</label><input type="number" id="m-cintura" placeholder="80"></div>
+        <div class="input-group"><label>Quadril (cm)</label><input type="number" id="m-quadril" placeholder="100"></div>
+        <div class="input-group"><label>Coxa (cm)</label><input type="number" id="m-coxa" placeholder="60"></div>
+        <div class="input-group"><label>Panturrilha (cm)</label><input type="number" id="m-pant" placeholder="38"></div>
+      </div>
+      <button class="btn-primary" style="width:100%" onclick="saveMedidas()">Salvar Medidas</button>
+      <div class="medidas-grid" id="medidas-display" style="display:none;margin-top:12px">
+        <div class="med-card"><div class="med-label">Cintura</div><div class="med-val" id="d-cintura">—</div><div class="med-unit">cm</div></div>
+        <div class="med-card"><div class="med-label">Quadril</div><div class="med-val" id="d-quadril">—</div><div class="med-unit">cm</div></div>
+        <div class="med-card"><div class="med-label">Coxa</div><div class="med-val" id="d-coxa">—</div><div class="med-unit">cm</div></div>
+        <div class="med-card"><div class="med-label">Panturrilha</div><div class="med-val" id="d-pant">—</div><div class="med-unit">cm</div></div>
+      </div>
+    </div>
+
+    <!-- Dor + Humor -->
+    <div class="prog-card">
+      <div class="prog-title">😌 Como estou hoje?</div>
+      <p style="font-size:13px;font-weight:600;color:var(--charcoal);margin-bottom:8px">Nível de dor / inchaço (1 = leve · 10 = intenso)</p>
+      <div class="dor-scale" id="dor-scale">
+        <button class="dor-btn" onclick="selectDor(this,1)">1</button>
+        <button class="dor-btn" onclick="selectDor(this,2)">2</button>
+        <button class="dor-btn" onclick="selectDor(this,3)">3</button>
+        <button class="dor-btn" onclick="selectDor(this,4)">4</button>
+        <button class="dor-btn" onclick="selectDor(this,5)">5</button>
+        <button class="dor-btn" onclick="selectDor(this,6)">6</button>
+        <button class="dor-btn" onclick="selectDor(this,7)">7</button>
+        <button class="dor-btn" onclick="selectDor(this,8)">8</button>
+        <button class="dor-btn" onclick="selectDor(this,9)">9</button>
+        <button class="dor-btn" onclick="selectDor(this,10)">10</button>
+      </div>
+      <p style="font-size:13px;font-weight:600;color:var(--charcoal);margin:16px 0 8px">Meu humor hoje</p>
+      <div class="humor-row">
+        <button class="humor-btn" onclick="selectHumor(this,'😔')">😔</button>
+        <button class="humor-btn" onclick="selectHumor(this,'😐')">😐</button>
+        <button class="humor-btn" onclick="selectHumor(this,'🙂')">🙂</button>
+        <button class="humor-btn" onclick="selectHumor(this,'😊')">😊</button>
+        <button class="humor-btn" onclick="selectHumor(this,'🌟')">🌟</button>
+      </div>
+      <button class="btn-primary" style="width:100%;margin-top:14px" onclick="saveDiario()">Salvar registro do dia</button>
+      <div id="diario-ok" style="display:none;text-align:center;color:var(--green);font-size:13px;margin-top:10px;font-weight:600">✓ Registrado com sucesso!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ CONQUISTAS ══════════════ -->
+<div id="tab-conquistas" class="tab-content">
+  <div class="conquistas-section">
+    <div class="frase-card" style="margin-bottom:16px">
+      <div class="frase-text">"Cada pequena vitória é uma prova de que você é capaz de muito mais."</div>
+      <div class="frase-author">PROTOCOLO 100 LIPEDEMA</div>
+    </div>
+    <div id="conquistas-grid" class="conquest-grid"></div>
+  </div>
+</div>
+
+<!-- ══════════════ INFO ══════════════ -->
+<div id="tab-info" class="tab-content">
+  <div class="info-section">
+    <div class="info-card">
+      <div class="info-card-title">O que é o Lipedema?</div>
+      <p class="info-text">O lipedema é uma doença crônica do tecido adiposo que afeta quase exclusivamente mulheres. Causa acúmulo anormal de gordura nas pernas, coxas e às vezes nos braços — uma gordura que <strong>não responde a dietas convencionais</strong> e está associada a dor, sensibilidade, inchaço e hematomas fáceis.</p>
+      <div class="highlight-box">⚠️ O lipedema <strong>não melhora</strong> porque você come menos. Melhora quando você <strong>reduz a inflamação</strong>. A combinação dos 7 pilares é o que traz resultados.</div>
+    </div>
+    <div class="info-card">
+      <div class="science-badge">CIÊNCIA 2024–2025</div>
+      <div class="info-card-title">O que a ciência confirma</div>
+      <p class="info-text">Um ensaio clínico de 2024 com 70 mulheres mostrou que a alimentação <strong>anti-inflamatória</strong> reduziu mais a dor e a gordura subcutânea do que dietas convencionais. Em 2025, pesquisa confirmou que maior adesão à dieta mediterrânea reduz marcadores inflamatórios TNF-α e IL-6 em mulheres com lipedema.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Por que diminuir o açúcar?</div>
+      <p class="info-text">O açúcar em excesso promove inflamação sistêmica e piora os sintomas. O objetivo <strong>não é cortar totalmente</strong>, mas <strong>diminuir e substituir</strong> por opções naturais.</p>
+      <div class="highlight-box">❌ Evite: sucralose, aspartame, acessulfame-K, ciclamato, sacarina<br>✅ Prefira: estévia, taumatina, mel puro (moderação)</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Por que variar os chás?</div>
+      <p class="info-text">Tomar o mesmo chá todos os dias não é recomendado — cada planta tem compostos que em excesso podem sobrecarregar o organismo. A variação maximiza os benefícios e mantém o corpo respondendo bem.</p>
+      <div class="highlight-box">📅 O app já organiza um chá diferente para cada dia da semana — sem repetição!</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">🌱 Mix de Sementes</div>
+      <p class="info-text">Compre <strong>100g de cada</strong> (chia, linhaça, gergelim preto, abóbora e girassol), misture num pote e consuma <strong>2 colheres de sopa no café da manhã</strong> — no iogurte, suco ou fruta.</p>
+      <div class="highlight-box">A combinação fornece ômega-3, fibras, antioxidantes, zinco, selênio e proteína vegetal — suporte nutricional completo para reduzir a inflamação.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Exercícios indicados</div>
+      <div style="margin-top:8px">
+        <span class="tag">🏊 Natação</span><span class="tag">🌊 Hidroginástica</span><span class="tag">🧘 Pilates</span><span class="tag">🌸 Yoga</span><span class="tag">🚴 Bicicleta ergométrica</span><span class="tag">🚶 Caminhada leve</span><span class="tag">💪 Musculação (baixa carga)</span>
+      </div>
+      <div class="highlight-box" style="margin-top:10px">❌ Evite: corrida, pular corda, saltos e exercícios de alto impacto nos joelhos e tornozelos.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+const dayNames=['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado','Domingo'];
+const frases=[
+  {text:"O lipedema não define você. A sua força de vontade, sim.",author:"Protocolo 100"},
+  {text:"Cada escolha anti-inflamatória é um presente para o seu corpo.",author:"Protocolo 100"},
+  {text:"Você não precisa ser perfeita. Precisa ser consistente.",author:"Protocolo 100"},
+  {text:"O seu corpo responde quando você o trata com cuidado e ciência.",author:"Protocolo 100"},
+  {text:"Pequenos passos todos os dias constroem grandes transformações.",author:"Protocolo 100"},
+  {text:"Reduzir a inflamação é reduzir a dor. Você tem esse poder.",author:"Protocolo 100"},
+  {text:"Cuide do seu corpo como se ele fosse a sua casa mais preciosa.",author:"Protocolo 100"}
+];
+
+const conquistas=[
+  {emoji:'🌱',name:'Primeiro Passo',desc:'Completou seu primeiro dia do protocolo',req:d=>d.streak>=1},
+  {emoji:'🔥',name:'3 Dias Seguidos',desc:'3 dias consecutivos no protocolo',req:d=>d.streak>=3},
+  {emoji:'⭐',name:'Uma Semana Completa',desc:'7 dias seguidos — uma semana inteira!',req:d=>d.streak>=7},
+  {emoji:'💪',name:'Duas Semanas',desc:'14 dias de consistência',req:d=>d.streak>=14},
+  {emoji:'🏆',name:'Um Mês Guerreira',desc:'30 dias seguindo o protocolo',req:d=>d.streak>=30},
+  {emoji:'💧',name:'Hidratada',desc:'Registrou peso pela primeira vez',req:d=>d.pesoCount>=1},
+  {emoji:'📏',name:'Medindo Progresso',desc:'Salvou suas medidas corporais',req:d=>d.medidasSalvas},
+  {emoji:'😊',name:'Autoconhecimento',desc:'Registrou seu bem-estar 3 vezes',req:d=>d.diarioCount>=3},
+  {emoji:'🌺',name:'Mestre dos Chás',desc:'Completou os 7 dias com chás diferentes',req:d=>d.streak>=7},
+  {emoji:'💊',name:'Suplementação Consistente',desc:'10 dias tomando os suplementos',req:d=>d.streak>=10},
+  {emoji:'🧦',name:'Compressão Diária',desc:'Usou a meia 7 dias seguidos',req:d=>d.streak>=7},
+  {emoji:'💆',name:'Ritual de Massagem',desc:'14 dias de massagem e drenagem',req:d=>d.streak>=14},
+];
+
+let state={streak:0,pesoList:[],medidas:{},diarioCount:0,medidasSalvas:false,checkStates:Array.from({length:7},()=>[false,false,false,false,false,false,false]),currentClDay:0,selectedDor:null,selectedHumor:null};
+
+function save(){try{localStorage.setItem('lipApp',JSON.stringify(state))}catch(e){}}
+function load(){try{const d=localStorage.getItem('lipApp');if(d)state=JSON.parse(d)}catch(e){}}
+load();
+
+// ── TABS ──
+function showTab(tab,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.bottom-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(tab==='checklist')renderFrase();
+  if(tab==='conquistas'){renderConquistas();renderFrase();}
+  if(tab==='progresso')renderPeso();
+}
+
+// ── DAYS ──
+function showDay(idx,btn){
+  document.querySelectorAll('.day-view').forEach(d=>d.classList.remove('active'));
+  document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('day-'+idx).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+// ── SECTIONS ──
+function toggleSection(header){header.parentElement.classList.toggle('open')}
+
+// ── ÁGUA ──
+function calcW(inId,outId){
+  const p=parseFloat(document.getElementById(inId).value);
+  const el=document.getElementById(outId);
+  if(isNaN(p)||p<=0){el.textContent='Digite seu peso ↑';return;}
+  const ml=Math.round(p*35);el.textContent=`Meta: ${ml} ml (${(ml/1000).toFixed(1)} L) por dia`;
+}
+
+// ── FRASE ──
+function renderFrase(){
+  const d=new Date().getDay();const f=frases[d%frases.length];
+  document.querySelectorAll('#frase-card').forEach(el=>{
+    el.innerHTML=`<div class="frase-text">"${f.text}"</div><div class="frase-author">${f.author}</div>`;
+  });
+}
+
+// ── CHECKLIST ──
+function selectClDay(idx,btn){
+  state.currentClDay=idx;
+  document.querySelectorAll('.cl-day-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('cl-day-title').textContent=dayNames[idx];
+  renderChecklist();
+}
+function renderChecklist(){
+  const items=document.querySelectorAll('#checklist-items .check-item');
+  const s=state.checkStates[state.currentClDay];
+  items.forEach((item,i)=>{s[i]?item.classList.add('done'):item.classList.remove('done');});
+  updateProgress();
+}
+function toggleCheck(item,i){
+  state.checkStates[state.currentClDay][i]=!state.checkStates[state.currentClDay][i];
+  item.classList.toggle('done');
+  updateProgress();save();
+}
+function updateProgress(){
+  const done=state.checkStates[state.currentClDay].filter(Boolean).length;
+  document.getElementById('cl-progress-label').textContent=`${done} de 7 tarefas concluídas`;
+  document.getElementById('cl-progress-bar').style.width=(done/7*100)+'%';
+}
+
+// ── STREAK ──
+function addStreak(){state.streak++;document.getElementById('streak-num').textContent=state.streak;save();renderConquistas();}
+function resetStreak(){if(confirm('Tem certeza que deseja reiniciar o contador?')){state.streak=0;document.getElementById('streak-num').textContent=0;save();renderConquistas();}}
+
+// ── PESO ──
+function addPeso(){
+  const data=document.getElementById('peso-data').value;
+  const val=parseFloat(document.getElementById('peso-val').value);
+  if(!data||isNaN(val)){alert('Preencha data e peso.');return;}
+  state.pesoList.push({data,val});state.pesoList.sort((a,b)=>a.data.localeCompare(b.data));
+  state.pesoCount=(state.pesoCount||0)+1;
+  document.getElementById('peso-data').value='';document.getElementById('peso-val').value='';
+  renderPeso();save();renderConquistas();
+}
+function renderPeso(){
+  const el=document.getElementById('peso-entries');
+  if(!state.pesoList||state.pesoList.length===0){el.innerHTML='<p style="font-size:13px;color:var(--muted);padding:8px 0">Nenhum peso registrado ainda.</p>';return;}
+  document.getElementById('streak-num').textContent=state.streak||0;
+  const list=[...state.pesoList].reverse();
+  el.innerHTML=list.map((e,i)=>{
+    const prev=list[i+1];
+    let diffHtml='';
+    if(prev){const d=(e.val-prev.val).toFixed(1);const cls=d<0?'diff-neg':d>0?'diff-pos':'diff-zero';const sign=d>0?'+':'';diffHtml=`<span class="peso-entry-diff ${cls}">${sign}${d} kg</span>`;}
+    const dt=new Date(e.data+'T12:00:00');const fmt=dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
+    return `<div class="peso-entry"><span class="peso-entry-date">${fmt}</span><div style="display:flex;gap:8px;align-items:center"><span class="peso-entry-val">${e.val} kg</span>${diffHtml}</div></div>`;
+  }).join('');
+}
+
+// ── MEDIDAS ──
+function saveMedidas(){
+  const fields=['cintura','quadril','coxa','pant'];
+  const vals={};let ok=true;
+  fields.forEach(f=>{const v=parseFloat(document.getElementById('m-'+f).value);if(!isNaN(v))vals[f]=v;else ok=false;});
+  if(!ok){alert('Preencha todas as medidas.');return;}
+  state.medidas=vals;state.medidasSalvas=true;
+  const d=document.getElementById('medidas-display');d.style.display='grid';
+  fields.forEach(f=>{document.getElementById('d-'+f).textContent=vals[f];});
+  save();renderConquistas();
+}
+
+// ── DIÁRIO ──
+function selectDor(btn,val){
+  document.querySelectorAll('.dor-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');state.selectedDor=val;
+}
+function selectHumor(btn,emoji){
+  document.querySelectorAll('.humor-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');state.selectedHumor=emoji;
+}
+function saveDiario(){
+  if(!state.selectedDor||!state.selectedHumor){alert('Selecione o nível de dor e o humor.');return;}
+  state.diarioCount=(state.diarioCount||0)+1;
+  document.getElementById('diario-ok').style.display='block';
+  setTimeout(()=>{document.getElementById('diario-ok').style.display='none';},2500);
+  save();renderConquistas();
+}
+
+// ── CONQUISTAS ──
+function renderConquistas(){
+  const grid=document.getElementById('conquistas-grid');
+  const d={streak:state.streak||0,pesoCount:(state.pesoList||[]).length,medidasSalvas:!!state.medidasSalvas,diarioCount:state.diarioCount||0};
+  grid.innerHTML=conquistas.map(c=>{
+    const unlocked=c.req(d);
+    return `<div class="conquest-card ${unlocked?'unlocked':'locked'}">
+      <div class="conquest-emoji">${c.emoji}</div>
+      <div class="conquest-name">${c.name}</div>
+      <div class="conquest-desc">${c.desc}</div>
+      ${unlocked?`<div class="conquest-badge">✓ CONQUISTADO</div>`:`<div class="locked-badge">🔒 Bloqueado</div>`}
+    </div>`;
+  }).join('');
+}
+
+// ── INIT ──
+renderChecklist();
+renderPeso();
+renderConquistas();
+renderFrase();
+document.getElementById('streak-num').textContent=state.streak||0;
+if(state.medidasSalvas&&state.medidas){
+  const d=document.getElementById('medidas-display');d.style.display='grid';
+  ['cintura','quadril','coxa','pant'].forEach(f=>{if(state.medidas[f])document.getElementById('d-'+f).textContent=state.medidas[f];});
+}
+</script>
+</body>
+</html>
+
+<!-- ═══ PWA INSTALL BAR ═══ -->
+<div id="install-bar" style="display:none;position:fixed;top:0;left:0;right:0;background:#7A2F3E;color:white;padding:12px 16px;z-index:9999;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.3)">
+  <div style="display:flex;align-items:center;gap:10px">
+    <span style="font-size:22px">📱</span>
+    <div>
+      <div style="font-size:13px;font-weight:700">Instalar o app no celular</div>
+      <div style="font-size:11px;opacity:.8">Funciona offline · salva seus dados</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="installApp()" style="background:#F2E0E4;color:#7A2F3E;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer">Instalar</button>
+    <button onclick="document.getElementById('install-bar').style.display='none'" style="background:rgba(255,255,255,.15);color:white;border:none;border-radius:8px;padding:8px 10px;font-size:12px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<script>
+// ═══ PWA SERVICE WORKER ═══
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js')
+      .then(()=>console.log('SW registrado'))
+      .catch(e=>console.log('SW erro:',e));
+  });
+}
+// ═══ PWA INSTALL PROMPT ═══
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  document.getElementById('install-bar').style.display='flex';
+});
+function installApp(){
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(()=>{
+    deferredPrompt=null;
+    document.getElementById('install-bar').style.display='none';
+  });
+}
+window.addEventListener('appinstalled',()=>{
+  document.getElementById('install-bar').style.display='none';
+});
+</script>

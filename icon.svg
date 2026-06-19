@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fundo vinho arredondado -->
+  <rect width="512" height="512" rx="96" fill="#7A2F3E"/>
+  <!-- Círculo rosa suave decorativo -->
+  <circle cx="380" cy="130" r="90" fill="#C8788A" opacity="0.25"/>
+  <!-- Texto 100 -->
+  <text x="256" y="210" font-family="Georgia, serif" font-size="130" font-weight="bold"
+    fill="#F2E0E4" text-anchor="middle" dominant-baseline="middle">100</text>
+  <!-- Linha divisória -->
+  <rect x="80" y="240" width="352" height="3" rx="2" fill="#C8788A" opacity="0.6"/>
+  <!-- Texto LIPEDEMA -->
+  <text x="256" y="310" font-family="Georgia, serif" font-size="52" font-weight="bold"
+    fill="#F2E0E4" text-anchor="middle" letter-spacing="8">LIPEDEMA</text>
+  <!-- Texto PROTOCOLO menor -->
+  <text x="256" y="370" font-family="Arial, sans-serif" font-size="32"
+    fill="#C8788A" text-anchor="middle" letter-spacing="6">PROTOCOLO</text>
+  <!-- Folhinha decorativa -->
+  <text x="256" y="430" font-size="40" text-anchor="middle">🌿</text>
+</svg>
