@@ -1,2 +1,2 @@
 # protocolo_lipedema
-App de autocuidado para lipedema 
+App de autocuidado para liped
